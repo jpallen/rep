@@ -35,3 +35,20 @@ def create(base_image_id, public_key=""):
 
 	return container_id
 
+def get_state(container_id):
+	try:
+		container = c.inspect_container(container_id)
+	except docker.client.APIError:
+		return "unreachable"
+	running = container["State"]["Running"]
+	if running:
+		return "running"
+	else:
+		return "stopped"
+
+def get_ip_address(container_id):
+	try:
+		container = c.inspect_container(container_id)
+	except docker.client.APIError:
+		return ""
+	return container["NetworkSettings"]["IPAddress"]

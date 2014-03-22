@@ -12,6 +12,8 @@ if (len(sys.argv) >= 2):
 		cli.list_images.run(sys.argv[2:])
 	elif command == "create-environment":
 		cli.create_environment.run(sys.argv[2:])
+	elif command == "list-environments":
+		cli.list_environments.run(sys.argv[2:])
 
 help_text = textwrap.dedent("""
 	Usage: rep COMMAND

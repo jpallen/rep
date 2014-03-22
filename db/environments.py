@@ -2,6 +2,18 @@ import sqlite3
 import db
 conn = sqlite3.connect('rep.db')
 
+def find():
+	c = conn.cursor()
+	_init_environment_table(c)
+	images = c.execute("SELECT id, docker_id, private_key, public_key FROM environments")
+
+	return list(map(
+		lambda i: dict(
+			id=i[0], docker_id=i[1], private_key=i[2], public_key=i[3]
+		),
+		images
+	))
+
 def create(env):
 	c = conn.cursor()
 	_init_environment_table(c)
