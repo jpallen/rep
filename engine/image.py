@@ -11,6 +11,15 @@ class Image:
 		image.save()
 		return image
 
+	@classmethod
+	def find(cls, options={}):
+		images = db.images.find()
+		return map(Image.build, images)
+
+	@classmethod
+	def build(cls, attributes):
+		return Image(**attributes)
+
 	def __init__(self, new=False, id=None, docker_id=None):
 		self.id = id if id is not None else engine.random_id()
 		self.docker_id = docker_id
@@ -19,6 +28,4 @@ class Image:
 	def save(self):
 		if self.new:
 			self.new = False
-			db.images.create_image(self.id, self.docker_id)
-
-
+			db.images.create(self.id, self.docker_id)

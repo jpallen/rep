@@ -2,7 +2,14 @@ import sqlite3
 import db
 conn = sqlite3.connect('rep.db')
 
-def create_image(image_sha, docker_id):
+def find():
+	c = conn.cursor()
+	_init_image_table(c)
+	images = c.execute("SELECT id, docker_id FROM images")
+
+	return list(map(lambda i: dict(id=i[0], docker_id=i[1]), images))
+
+def create(image_sha, docker_id):
 	c = conn.cursor()
 	_init_image_table(c)
 	c.execute("INSERT INTO images (id, docker_id) VALUES (?, ?);", [image_sha, docker_id])

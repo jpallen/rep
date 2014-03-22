@@ -8,6 +8,8 @@ if (len(sys.argv) >= 2):
 	[base, command] = sys.argv[0:2]
 	if command == "import-image":
 		cli.import_image.run(sys.argv[2:])
+	elif command == "list-images":
+		cli.list_images.run(sys.argv[2:])
 	elif command == "create-environment":
 		cli.create_environment.run(sys.argv[2:])
 
