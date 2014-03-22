@@ -1,6 +1,6 @@
 import subprocess
 import db
-import engine
+import rep
 from virtualization.images import import_tar_stream
 
 class Image:
@@ -21,7 +21,7 @@ class Image:
 		return Image(**attributes)
 
 	def __init__(self, new=False, id=None, docker_id=None):
-		self.id = id if id is not None else engine.random_id()
+		self.id = id if id is not None else rep.random_id()
 		self.docker_id = docker_id
 		self.new = new
 

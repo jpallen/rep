@@ -2,10 +2,15 @@ import sqlite3
 import db
 conn = sqlite3.connect('rep.db')
 
-def create_environment(environment_sha, docker_id):
+def create(env):
 	c = conn.cursor()
 	_init_environment_table(c)
-	c.execute("INSERT INTO environments (id, docker_id) VALUES (?, ?);", [environment_sha, docker_id])
+	values = [env.id, env.docker_id, env.private_key, env.public_key]
+	print(values)
+	c.execute(
+		"INSERT INTO environments (id, docker_id, private_key, public_key) VALUES (?, ?, ?, ?);",
+		values
+	)
 	conn.commit()
 
 def get_docker_environment_id(environment_id):
@@ -18,4 +23,4 @@ def get_docker_environment_id(environment_id):
 	return row[0]
 
 def _init_environment_table(c):
-	c.execute("CREATE TABLE IF NOT EXISTS environment(id TEXT PRIMARY KEY, docker_id TEXT);")
+	c.execute("CREATE TABLE IF NOT EXISTS environments(id TEXT PRIMARY KEY, docker_id TEXT, private_key TEXT, public_key TEXT);")

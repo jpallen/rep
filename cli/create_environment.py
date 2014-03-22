@@ -1,6 +1,6 @@
 import sys
 import argparse
-from engine import Environment
+from rep import Environment
 
 def run(argv):
 	parser = argparse.ArgumentParser(description='Create an environment from an existing image')

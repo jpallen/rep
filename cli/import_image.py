@@ -1,5 +1,5 @@
 import sys
-from engine import Image
+from rep import Image
 
 def run(argv):
 	image = Image.create_from_tar_stream(sys.stdin.buffer)
