@@ -16,6 +16,10 @@ def run(argv):
 		print("No environment found: %s", args.environment)
 		sys.exit(1)
 
+	if env.state != "running":
+		print("%s is not currently running. Please start it first." % env.id)
+		sys.exit(1)
+
 	ip_address = env.ip_address
 	print("Connecting to %s at %s" % (env.id, ip_address))
 

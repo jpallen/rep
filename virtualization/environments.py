@@ -52,3 +52,9 @@ def get_ip_address(container_id):
 	except docker.client.APIError:
 		return ""
 	return container["NetworkSettings"]["IPAddress"]
+
+def start(container_id):
+	c.start(container_id)
+
+def stop(container_id):
+	c.stop(container_id)

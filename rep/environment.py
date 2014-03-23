@@ -61,6 +61,12 @@ class Environment:
 			self.new = False
 			db.environments.create(self)
 
+	def start(self):
+		virtualization.environments.start(self.docker_id)
+
+	def stop(self):
+		virtualization.environments.stop(self.docker_id)
+
 	def _generate_ssh_keys(self):
 		keys_dir = os.path.join(rep.TMP_DIR, "keys")
 		subprocess.check_call(["mkdir", "-p", keys_dir])

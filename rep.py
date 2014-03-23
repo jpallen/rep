@@ -16,6 +16,10 @@ if (len(sys.argv) >= 2):
 		cli.list_environments.run(sys.argv[2:])
 	elif command == "connect":
 		cli.connect.run(sys.argv[2:])
+	elif command == "start":
+		cli.start.run(sys.argv[2:])
+	elif command == "stop":
+		cli.stop.run(sys.argv[2:])
 
 help_text = textwrap.dedent("""
 	Usage: rep COMMAND
