@@ -17,6 +17,14 @@ class Image:
 		return map(Image.build, images)
 
 	@classmethod
+	def findOne(cls, query={}):
+		envs = db.images.find(query)
+		if (len(envs) > 0):
+			return Image.build(envs[0])
+		else:
+			return None
+
+	@classmethod
 	def build(cls, attributes):
 		return Image(**attributes)
 

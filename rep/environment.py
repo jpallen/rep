@@ -4,21 +4,30 @@ import rep
 import subprocess
 import os
 import rep
+from rep import Image
 
 class Environment:
 	@classmethod
 	def create_from_image_id(cls, image_id, name=None):
 		env = Environment(new=True)
 		env._generate_ssh_keys()
-		docker_image_id = db.images.get_docker_image_id(image_id)
-		env.docker_id = virtualization.environments.create(docker_image_id, public_key=env.public_key)
+		image = Image.findOne({"id": image_id})
+		env.docker_id = virtualization.environments.create(image.docker_id, public_key=env.public_key)
 		env.save()
 		return env
 
 	@classmethod
-	def find(cls):
-		envs = db.environments.find()
+	def find(cls, query={}):
+		envs = db.environments.find(query)
 		return map(Environment.build, envs)
+
+	@classmethod
+	def findOne(cls, query={}):
+		envs = db.environments.find(query)
+		if (len(envs) > 0):
+			return Environment.build(envs[0])
+		else:
+			return None
 
 	@classmethod
 	def build(cls, attributes):
@@ -39,6 +48,14 @@ class Environment:
 	def state(self):
 		return virtualization.environments.get_state(self.docker_id)
 
+	@property
+	def private_key_path(self):
+		return os.path.join(rep.TMP_DIR, "keys", self.id)
+
+	@property
+	def public_key_path(self):
+		return os.path.join(rep.TMP_DIR, "keys", self.id + ".pub")
+
 	def save(self):
 		if self.new:
 			self.new = False
@@ -46,12 +63,10 @@ class Environment:
 
 	def _generate_ssh_keys(self):
 		keys_dir = os.path.join(rep.TMP_DIR, "keys")
-		key_path = os.path.join(keys_dir, self.id)
-		public_key_path = key_path + ".pub"
 		subprocess.check_call(["mkdir", "-p", keys_dir])
-		subprocess.check_call(["ssh-keygen", "-f", key_path, "-P", "", "-C", self.id])
+		subprocess.check_call(["ssh-keygen", "-f", self.private_key_path, "-P", "", "-C", self.id])
 
-		with open(key_path, 'r') as private_key:
+		with open(self.private_key_path, 'r') as private_key:
 			self.private_key = private_key.read()
-		with open(public_key_path, 'r') as public_key:
+		with open(self.public_key_path, 'r') as public_key:
 			self.public_key = public_key.read()

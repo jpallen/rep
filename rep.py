@@ -14,6 +14,8 @@ if (len(sys.argv) >= 2):
 		cli.create_environment.run(sys.argv[2:])
 	elif command == "list-environments":
 		cli.list_environments.run(sys.argv[2:])
+	elif command == "connect":
+		cli.connect.run(sys.argv[2:])
 
 help_text = textwrap.dedent("""
 	Usage: rep COMMAND
